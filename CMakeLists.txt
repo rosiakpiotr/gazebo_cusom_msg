@@ -17,19 +17,33 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
-# uncomment the following section in order to fill in
-# further dependencies manually.
-# find_package(<dependency> REQUIRED)
+find_package(gazebo_msgs REQUIRED)
+find_package(Protobuf REQUIRED)
+pkg_check_modules(PROTOBUF protobuf)
 
-if(BUILD_TESTING)
-  find_package(ament_lint_auto REQUIRED)
-  # the following line skips the linter which checks for copyrights
-  # uncomment the line when a copyright and license is not present in all source files
-  #set(ament_cmake_copyright_FOUND TRUE)
-  # the following line skips cpplint (only works in a git repo)
-  # uncomment the line when this package is not in a git repo
-  #set(ament_cmake_cpplint_FOUND TRUE)
-  ament_lint_auto_find_test_dependencies()
+if("${PROTOBUF_VERSION}" VERSION_LESS "2.5.0")
+  message(FATAL_ERROR "protobuf version: ${PROTOBUF_VERSION} not compatible, must be >= 2.5.0")
 endif()
 
+set(sknr_msgs
+  msg/CommandPitchAngle.proto
+  msg/VppState.proto
+)
+
+PROTOBUF_GENERATE_CPP(SKNR_PROTO_SRCS SKNR_PROTO_HDRS ${sknr_msgs})
+add_library(sknr_msgs SHARED ${SKNR_PROTO_SRCS})
+target_link_libraries(sknr_msgs ${PROTOBUF_LIBRARY})
+
 ament_package()
+
+install(FILES
+  ${SKNR_PROTO_SRCS}
+  DESTINATION
+  include/${PROJECT_NAME}
+)
+
+install(TARGETS
+  sknr_msgs
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin)

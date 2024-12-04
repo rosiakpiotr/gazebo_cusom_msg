@@ -1,0 +1,8 @@
+syntax = "proto2";
+
+package sknr.msgs;
+
+message CommandPitchAngle
+{
+  repeated float pitch_angle  = 1 [packed=true];
+}
