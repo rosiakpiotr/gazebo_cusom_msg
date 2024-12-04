@@ -34,6 +34,13 @@ PROTOBUF_GENERATE_CPP(SKNR_PROTO_SRCS SKNR_PROTO_HDRS ${sknr_msgs})
 add_library(sknr_msgs SHARED ${SKNR_PROTO_SRCS})
 target_link_libraries(sknr_msgs ${PROTOBUF_LIBRARY})
 
+set(mav_msgs
+  msg/CommandMotorSpeed.proto
+)
+PROTOBUF_GENERATE_CPP(MAV_PROTO_SRCS MAV_PROTO_HDRS ${mav_msgs})
+add_library(mav_msgs SHARED ${MAV_PROTO_SRCS})
+target_link_libraries(mav_msgs ${PROTOBUF_LIBRARY})
+
 ament_export_include_directories(include)
 
 ament_export_dependencies(
@@ -47,8 +54,20 @@ install(FILES
   include/${PROJECT_NAME}
 )
 
+install(FILES
+  ${MAV_PROTO_HDRS}
+  DESTINATION
+  include/${PROJECT_NAME}
+)
+
 install(TARGETS
   sknr_msgs
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin)
+
+install(TARGETS
+  mav_msgs
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin)
