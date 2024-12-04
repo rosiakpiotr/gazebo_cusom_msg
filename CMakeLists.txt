@@ -34,15 +34,15 @@ PROTOBUF_GENERATE_CPP(SKNR_PROTO_SRCS SKNR_PROTO_HDRS ${sknr_msgs})
 add_library(sknr_msgs SHARED ${SKNR_PROTO_SRCS})
 target_link_libraries(sknr_msgs ${PROTOBUF_LIBRARY})
 
+ament_export_include_directories(include)
+
 ament_export_dependencies(
   gazebo_msgs
   Protobuf
 )
 
-ament_package()
-
 install(FILES
-  ${SKNR_PROTO_SRCS}
+  ${SKNR_PROTO_HDRS}
   DESTINATION
   include/${PROJECT_NAME}
 )
@@ -52,3 +52,5 @@ install(TARGETS
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin)
+
+ament_package()
