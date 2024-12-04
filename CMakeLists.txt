@@ -42,6 +42,8 @@ add_library(mav_msgs SHARED ${MAV_PROTO_SRCS})
 target_link_libraries(mav_msgs ${PROTOBUF_LIBRARY})
 
 ament_export_include_directories(include)
+ament_export_libraries(sknr_msgs)
+ament_export_libraries(mav_msgs)
 
 ament_export_dependencies(
   gazebo_msgs
@@ -71,5 +73,8 @@ install(TARGETS
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin)
+
+install(TARGETS sknr_msgs DESTINATION ~/PX4-Autopilot/build/px4_sitl_default/build_gazebo-classic)
+install(TARGETS mav_msgs DESTINATION ~/PX4-Autopilot/build/px4_sitl_default/build_gazebo-classic)
 
 ament_package()
