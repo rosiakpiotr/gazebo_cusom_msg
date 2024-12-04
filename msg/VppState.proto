@@ -11,4 +11,5 @@ message VppState {
   required double airspeed = 6;
   required double advance_ratio = 7;
   required double motor_index = 8;
+  required double power = 9;
 } 
